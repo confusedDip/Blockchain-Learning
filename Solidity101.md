@@ -94,3 +94,29 @@ Person public person = Person({
     });
 */
 ```
+
+## Solidity Data Storage and Management
+
+In Solidity, data can be stored in 6 different locations:
+
+1. `memory`
+2. `calldata`
+3. `storage`
+4. `stack`
+5. `logs`
+6. `code`
+
+- In Solidity, `calldata` and `memory` are temporary storage locations for variables during function execution.
+- `calldata` is read-only, therefore mostly used for function input parameters.
+
+```solidity
+function myFunction (string calldata _myString) {...}
+```
+
+- `memory` provides both read-write access, allowing them to be changed within functions. By default, most variables declared are default to memory. However, for strings, it must be explicity specified as follows:
+
+```solidity
+string memory myString = "Souradip";
+```
+
+- `storage` variables are the ones that are persistent and are stored in the Blockchain. Therefore, variables declared within a function cannot be a storage variable.
