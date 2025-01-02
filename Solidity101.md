@@ -68,7 +68,7 @@ Declaration of arrays in Solidity is similar to other programming languages. The
 uint256[] myUintArray = [2, 5, 10];
 ```
 
-## Solidity Strctures
+## Solidity Structures
 
 Like `C`, there are user-defined data types in Solidity as well, known as, `struct`. 
 
@@ -120,3 +120,12 @@ string memory myString = "Souradip";
 ```
 
 - `storage` variables are the ones that are persistent and are stored in the Blockchain. Therefore, variables declared within a function cannot be a storage variable.
+
+## Mappings
+
+Mappings in Solidity are equivalent to dictionaries in Python, and essentially are lists of key-value pairs. Here is the syntax to declare a mapping in Solidity:
+
+```solidity
+mapping (uint256 => string) public names;
+names[1] = "Souradip";
+```
