@@ -60,3 +60,37 @@ contract DemoContract {
 }
 ```
 
+## Solidity Arrays
+
+Declaration of arrays in Solidity is similar to other programming languages. The arrays are 0-indexed. For example,
+
+```solidity
+uint256[] myUintArray = [2, 5, 10];
+```
+
+## Solidity Strctures
+
+Like `C`, there are user-defined data types in Solidity as well, known as, `struct`. 
+
+```solidity
+struct Person {
+    address pub_key;
+    address pvt_key;
+    string name;
+    uint256 balance;
+}
+```
+
+Instantiating variables of the defined structure can be done as follows:
+
+```solidity
+Person public person = Person(0x2..ab, 0x2..ff, "Souradip", 5000);
+/* equals to
+Person public person = Person({
+    pub_key:0x2..ab,
+    pvt_key:0x2..ff,
+    name:"Souradip",
+    balance:5000
+    });
+*/
+```
