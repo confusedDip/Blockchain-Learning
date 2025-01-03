@@ -129,3 +129,41 @@ Mappings in Solidity are equivalent to dictionaries in Python, and essentially a
 mapping (uint256 => string) public names;
 names[1] = "Souradip";
 ```
+
+## Import in Solidity
+
+It is possible to import one solidity file to another using the `import` keyword. There are different ways we could do that:
+
+- Importing the entire `.sol` file by `import "path_to_the_file";`
+- Named imports, by specifying the exact contract names within curly braces: `import {contractName} from "path_to_the_file";`
+
+It is also possible to deploy one contract from another using the `new` keyword. For example,
+
+```solidity
+contract ContractOne {}
+
+contract ContractTwo {
+    ContractOne public contractOne = new ContractOne();
+}
+```
+
+## Inheritence in Solidity
+
+Solidity supports inheritence and method override using the `is` and `override`, `virtual` keywords, respectively.
+
+```solidity
+contract ParentContract {}
+contract ChildContract is ParentContract {}
+```
+
+Method override can be possible in the child contract by specifying the exact same method signature along with the keyword `override`, and specifying the original method in the parent contract as `virtual`
+
+```solidity
+contract ParentContract {
+    function myFunction() public virtual {}
+}
+contract ChildContract is ParentContract{
+    function myFunction() public override {}
+}
+```
+
