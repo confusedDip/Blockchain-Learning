@@ -130,6 +130,14 @@ mapping (uint256 => string) public names;
 names[1] = "Souradip";
 ```
 
+## Loops in Solidity
+
+**For Loops in Solidity** has the following syntax:
+
+```solidity
+for (/* starting index; ending index; step count*/) {...}
+```
+
 ## Import in Solidity
 
 It is possible to import one solidity file to another using the `import` keyword. There are different ways we could do that:
@@ -165,5 +173,80 @@ contract ParentContract {
 contract ChildContract is ParentContract{
     function myFunction() public override {}
 }
+```
+
+## Creating Libraries in Solidity
+
+Libraries in Solidity are very similar to contracts, just they cannot have any state variables and all variables/functions must be marked internal.
+
+To create a library use the `library` keyword instead of `contract`. Then through named imports, the library can be imported wherever it is needed to be used. Also, the library can be attached to a specific datatype by using the following statement:
+
+```solidity
+using LibraryName for DataTypeName;
+```
+
+## The `require` keyword
+
+The `require` keyword in Solidity is used to conditionally revert transactions. If a certain condition is not fulfilled all instructions performed prior to the `require` check are reverted and the remaining gas cost is returned.
+
+```solidity
+uint x = 5;
+x += 2;
+require(x < 2, "x must be less than 2");
+...
+```
+
+## Optimizing Gas Cost using `constant` and `immutable`
+
+To reduce gas usage, we can use the keywords `constant` and `immutable`. These keywords ensure variables assigned once and never change. 
+
+- For values known at **compile time**, use the `constant` keyword. It prevents the variable from occupying a storage slot, making it cheaper and faster to read. The naming convention for `constant` variables are all caps (e.g., `MIN_USD`).
+- `immutable` can be used for variables set at deployment time that will not change. The naming convention for `immutable` variables is to add the prefix `i_` to the variable name (e.g., `i_owner`).
+
+## Modifiers in Solidity
+
+Modifiers in Solidity allows us to execute some reusable `pre` or `post` code before the execution of a function and tie it to a single keyword. For example,
+
+```solidity
+function withdraw() public positiveBalanceOnly {
+    ... // Before executing the logic, the logic in positiveBalanceOnly() will be executed
+}
+modifier positiveBalanceOnly() {
+    require(balance > 0, "Balance must be positive");
+    _;  // This will execute the logic in the function whoever calls it
+}```
+
+## Sending ETH through a function
+
+A function in Solidity can allow users invoking the function to send money through it. Here are the steps:
+
+- Make the function payable by specifying the keyword `payable` in the function signature
+- Wei/GWei/ETH can be sent through functions using the `value` field
+- A contract can store this value and the balance can be accessed through `msg.value`
+
+## Withdraw ETH from a contract
+
+There are three ways the ETH balance stored in a Smart Contract can be withdrawn:
+
+- **Using `transfer`:** This needs a casting of `payable` to the receiver's address to transfer the balance of the smart contract. 
+   
+```solidity
+payable(msg.sender).transfer(address(this).balance);
+```
+
+The issue with `transfer` is that the gas cost for using `transfer` is capped at 2300 gas. Therefore, if more gas is needed, it will throw an error and revert the transaction.
+
+- **Using `send`:** This is similar to `transfer`. However, in case of a failed transaction, instead of throwing an error it will return an error code in boolean.
+
+```solidity
+bool sendSuccessCode = payable(msg.sender).send(address(this).balance);
+require(sendSuccessCode, "Transaction Unsuccessful");
+```
+
+- **Using `call`: *(Recommended)*** This is a low-level command that can be used to call any part of the contract using transactions. To withdraw the balance stored, we can perform an empty call with the contract balance as the `msg.value`. Interestingly, `call` does not have a gas cap unlike the other two options.
+
+```solidity
+(bool callSuccess, bytes memory returnedData) = payable(msg.sender).call{value:address(this).balance}("");
+require(callSuccess, "Transaction Unsuccessful");
 ```
 
