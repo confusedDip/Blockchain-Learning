@@ -214,7 +214,8 @@ function withdraw() public positiveBalanceOnly {
 modifier positiveBalanceOnly() {
     require(balance > 0, "Balance must be positive");
     _;  // This will execute the logic in the function whoever calls it
-}```
+}
+```
 
 ## Sending ETH through a function
 
@@ -250,3 +251,25 @@ require(sendSuccessCode, "Transaction Unsuccessful");
 require(callSuccess, "Transaction Unsuccessful");
 ```
 
+## `receive()` and `fallback()`
+
+These are special Solidity functions that are called with every transactions. If transactions are called with no-calldata, `receive()` is triggered, otherwise `fallback()` is triggered.
+
+`fallback` is executed either when:
+
+- a function that does not exist is called or
+- Ether is sent directly to a contract but `receive()` does not exist or `msg.data` is not empty
+
+```solidity
+                 send Ether
+                      |
+           msg.data is empty?
+                /           \
+            yes             no
+             |                |
+    receive() exists?     fallback()
+        /        \
+     yes          no
+      |            |
+  receive()     fallback()
+```
